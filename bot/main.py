@@ -1,5 +1,6 @@
 import os
 import threading
+import asyncio
 from flask import Flask
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, PreCheckoutQueryHandler, MessageHandler, filters
 
@@ -16,7 +17,7 @@ def home():
     return "Bot is running!"
 
 # Function to run the Telegram bot
-def run_bot():
+async def run_bot():
     application = Application.builder().token(BOT_TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
@@ -24,14 +25,15 @@ def run_bot():
     application.add_handler(PreCheckoutQueryHandler(send_payment_invoice))
     application.add_handler(MessageHandler(filters.SUCCESSFUL_PAYMENT, send_payment_invoice))
 
-    application.run_polling()
+    await application.run_polling()
+
+def start_bot():
+    asyncio.run(run_bot())  # Ensure async compatibility
 
 # Run Flask and the bot together
 if __name__ == "__main__":
-    # Start the Telegram bot in a separate thread
-    bot_thread = threading.Thread(target=run_bot)
+    bot_thread = threading.Thread(target=start_bot)
     bot_thread.start()
 
-    # Start Flask server
-    port = int(os.environ.get("PORT", 8080))  # Render's assigned PORT
+    port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
