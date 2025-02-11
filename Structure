@@ -1,0 +1,13 @@
+telegram-bot/
+│── bot/
+│   ├── __init__.py
+│   ├── main.py            # Main bot logic
+│   ├── handlers.py        # Handles commands and payments
+│   ├── payments.py        # Payment processing logic
+│   ├── subscription.py    # Checks and adds users to the channel
+│   ├── config.py          # Loads environment variables
+│── requirements.txt       # Dependencies for Render
+│── .env.example           # Example environment variables
+│── README.md              # Project documentation
+│── render.yaml            # Render deployment configuration
+│── start.sh               # Startup script for Render
