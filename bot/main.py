@@ -1,11 +1,22 @@
+import os
+import threading
+from flask import Flask
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, PreCheckoutQueryHandler, MessageHandler, filters
-from .handlers import start, handle_payment
-from .payments import send_payment_invoice
-from .subscription import check_subscription
 
-from .config import BOT_TOKEN
+from bot.handlers import start, handle_payment
+from bot.payments import send_payment_invoice
+from bot.subscription import check_subscription
+from bot.config import BOT_TOKEN
 
-def main():
+# Initialize Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
+# Function to run the Telegram bot
+def run_bot():
     application = Application.builder().token(BOT_TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
@@ -15,18 +26,12 @@ def main():
 
     application.run_polling()
 
+# Run Flask and the bot together
 if __name__ == "__main__":
-    main()
+    # Start the Telegram bot in a separate thread
+    bot_thread = threading.Thread(target=run_bot)
+    bot_thread.start()
 
-import os
-from flask import Flask
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Bot is running!"
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))  # Use Render’s PORT
+    # Start Flask server
+    port = int(os.environ.get("PORT", 8080))  # Render's assigned PORT
     app.run(host="0.0.0.0", port=port)
