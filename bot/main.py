@@ -1,9 +1,8 @@
 import os
-import threading
 import asyncio
+import logging
 from flask import Flask
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, PreCheckoutQueryHandler, MessageHandler, filters
-import logging
 
 from bot.handlers import start, handle_payment
 from bot.payments import send_payment_invoice
@@ -15,7 +14,6 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
 )
-
 logger = logging.getLogger(__name__)
 
 # Initialize Flask
@@ -40,14 +38,12 @@ async def run_bot():
     except Exception as e:
         logger.error(f"Error starting bot: {e}")
 
-def start_bot():
-    asyncio.run(run_bot())
-
-# Run Flask and the bot together
 if __name__ == "__main__":
-    bot_thread = threading.Thread(target=start_bot, daemon=True)
-    bot_thread.start()
+    # Start Telegram bot in the main thread
+    loop = asyncio.get_event_loop()
+    loop.create_task(run_bot())  # Run bot as an async task
 
+    # Start Flask app
     port = int(os.environ.get("PORT", 8080))
     logger.info(f"Starting Flask server on port {port}...")
     app.run(host="0.0.0.0", port=port)
