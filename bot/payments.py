@@ -1,6 +1,6 @@
 from telegram import Update, LabeledPrice
 from telegram.ext import CallbackContext
-from bot.config import PAYMENT_PROVIDER_TOKEN
+from config import PAYMENT_PROVIDER_TOKEN
 
 async def send_payment_invoice(update: Update, context: CallbackContext, amount):
     """Sends a payment invoice"""
