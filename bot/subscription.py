@@ -1,5 +1,5 @@
 from telethon.sync import TelegramClient
-from config import API_ID, API_HASH, CHANNEL_ID
+from bot.config import API_ID, API_HASH, CHANNEL_ID
 
 client = TelegramClient("session_name", API_ID, API_HASH)
 
