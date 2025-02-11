@@ -1,9 +1,9 @@
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, PreCheckoutQueryHandler, MessageHandler, filters
-from bot.handlers import start, handle_payment
-from bot.payments import send_payment_invoice
-from bot.subscription import check_subscription
+from handlers import start, handle_payment
+from payments import send_payment_invoice
+from subscription import check_subscription
 
-from bot.config import BOT_TOKEN
+from config import BOT_TOKEN
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
