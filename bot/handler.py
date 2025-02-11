@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext
-from payments import send_payment_invoice
-from subscription import check_subscription
+from .payments import send_payment_invoice
+from .subscription import check_subscription
 
 async def start(update: Update, context: CallbackContext):
     """Handles /start command"""
